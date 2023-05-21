@@ -1,60 +1,44 @@
 package UI;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.*;
 
-import javax.imageio.ImageIO;
-
-import Herencia.DispositivoElectronico;
-
-public class UICanvas {
+public class UICanvas extends JFrame {
 	
-	private BufferedImage image;
-	private DispositivoElectronico dispositivo;
-	
-	public UICanvas(String imagen, DispositivoElectronico dispositivo) {
-		try {
-			image = ImageIO.read(new File("src/UI/" + imagen));
-		} catch (Exception error) {
-			error.printStackTrace();
-		}
+	private static final long serialVersionUID = 1L;
+
+	public UICanvas() {
+		setTitle("Componentes electrónicos");
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new GridLayout(2, 3));
 		
-		this.dispositivo = dispositivo;
+		UIComputadora computadora = new UIComputadora();
+		UIMicroprocesador microprocesador = new UIMicroprocesador();
+		UIPantalla pantalla = new UIPantalla();
+		UISensor sensor = new UISensor();
+		UISmartphone smartphone = new UISmartphone();
+		UITelevision television = new UITelevision();
+		
+		JPanel panelSuperior = new JPanel();
+		panelSuperior.add(computadora);
+		panelSuperior.add(microprocesador);
+		panelSuperior.add(pantalla);
+		
+		JPanel panelInferior = new JPanel();
+		panelInferior.add(sensor);
+		panelInferior.add(smartphone);
+		panelInferior.add(television);
+		
+		add(panelSuperior);
+		add(panelInferior);
+		
+		pack();
+		setVisible(true);
+		
 	}
 	
-	public void dibujar() {
-		JFrame frame = new JFrame("Herencia");
-		frame.setLocationRelativeTo(null);
-		frame.setSize(350, 350);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JPanel canvas = new JPanel() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				int x = (getWidth() - 300) / 2;
-                int y = (getHeight() - 300) / 2;
-                g.drawImage(image, x, y, 300, 300, null);
-			}
-		};
-		
-		canvas.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int clickX = e.getX();
-                int clickY = e.getY();
-
-                if (clickX >= 25 && clickX <= 325 && clickY >= 15 && clickY <= 325) {
-                    System.out.println(dispositivo.toString());
-                }
-            }
-        });
-		
-		frame.add(canvas);
-        frame.setVisible(true);
+	public static void main(String [] args) {
+		new UICanvas();
 	}
 }

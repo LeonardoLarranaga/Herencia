@@ -1,16 +1,56 @@
 package UI;
 
-import java.util.ArrayList;
-import Herencia.*;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
-public class UISmartphone {	
-	public static void main(String[] args) {
-		UICanvas canvas = new UICanvas("Smartphone.png", 
-							new Smartphone("Apple", "A2176", "Apple", "iPhone 12 mini", 8925, new ArrayList<>(),
-							new Microprocesador("Apple", "A142020", "Apple", "A14 Bionic", 1500, new ArrayList<>(), 1024, 15000), 4096, 
-							new Sensor("Apple", "2020", "Apple", "Touch ID", 5000, new ArrayList<>(), "Huella", "Huella", 10), 
-							new Pantalla("Samsung", "12mini", "Apple", "iPhone 12 mini Screen", 3000, new ArrayList<>(), 2340, 1080)));
+import Herencia.Smartphone;
+
+public class UISmartphone extends JButton {	
+	
+	private static final long serialVersionUID = 1L;
+	private BufferedImage image;
+	private Smartphone smartphone;
+	
+	public UISmartphone() {
+		init("Smartphone.png", Ejemplo.smartphone);
+	}
+
+	public UISmartphone(String imagen, Smartphone smartphone) {
+		init(imagen, smartphone);
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public Smartphone getSmartphone() {
+		return smartphone;
+	}
+
+	
+	public void init(String imagen, Smartphone smartphone) {
+		try {
+			image = ImageIO.read(new File("src/UI/" + imagen));
+			
+			setIcon(new ImageIcon(image.getScaledInstance(300, 300, Image.SCALE_SMOOTH)));
+			setPreferredSize(new Dimension(300, 300));
+			
+			addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println(smartphone.toString());
+                }
+            });
+		} catch (Exception error) {
+			error.printStackTrace();
+		}
 		
-		canvas.dibujar();
+		this.smartphone = smartphone;
 	}
 }
